@@ -20,7 +20,7 @@ use FlyingLuscas\Correios\Service;
 try {
     \PagSeguro\Library::initialize();
 } catch (Exception $e) {
-    die($e);
+    return($e);
 }
 
 \PagSeguro\Configuration\Configure::setEnvironment('sandbox'); //production or sandbox
@@ -101,7 +101,7 @@ class PagseguroController extends Controller
         $item = new \PagSeguro\Domains\Item();
         $payment->setItems($pedido);
 
-        foreach (json_decode($pedido) as $id => $produto) {
+        foreach ($pedido as $id => $produto) {
 
             //Verifica se o produto existe
             if (!$data = $this->Item->find($produto->itemId)){
@@ -132,7 +132,6 @@ class PagseguroController extends Controller
         $payment->setReference("LIBPHP000001");
 
         //Seta o endereço para a API PAGSEGURO
-        $endereco = json_decode($endereco);
         $payment->setShipping()->setAddress()->withParameters(
             $endereco->rua,
             $endereco->numero,
@@ -216,7 +215,7 @@ class PagseguroController extends Controller
 
                 $encomenda_id = $this->Encomenda->create($dados)->id;
 
-                foreach (json_decode($pedido) as $id => $produto) {
+                foreach ($pedido as $id => $produto) {
 
                     $this->Encomenda_has_item->create([
                         'encomenda_id' => $encomenda_id,
