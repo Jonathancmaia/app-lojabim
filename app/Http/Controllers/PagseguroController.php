@@ -55,14 +55,6 @@ try {
  */
 \PagSeguro\Configuration\Configure::setLog(true, 'storage/logs');
 
-try {
-    $response = \PagSeguro\Services\Session::create(
-        \PagSeguro\Configuration\Configure::getAccountCredentials()
-    );
-} catch (Exception $e) {
-    die($e->getMessage());
-}
-
 class PagseguroController extends Controller
 {
 
@@ -73,7 +65,6 @@ class PagseguroController extends Controller
         $this->Encomenda = $encomenda;
         $this->Cliente = $cliente;
         $this->Encomenda_has_item = $encomenda_has_item;
-        $this->middleware('auth:api', ['except' => ['login']]);
 
     }
 
@@ -91,6 +82,16 @@ class PagseguroController extends Controller
 
 
     public function checkout(Request $request){
+
+        $this->middleware('auth:api', ['except' => ['login']]);
+
+        try {
+            $response = \PagSeguro\Services\Session::create(
+                \PagSeguro\Configuration\Configure::getAccountCredentials()
+            );
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
 
         $valor = '0';
         $payment = new \PagSeguro\Domains\Requests\Payment();
@@ -223,6 +224,18 @@ class PagseguroController extends Controller
                     ]);
 
                 }
+
+                $this->Endereco->create([
+                    'cliente_id' => auth()->user()->id,
+                    'cep' => $endereco->cep,
+                    'rua' => $endereco->rua,
+                    'bairro' => $endereco->bairro,
+                    'cidade' => $endereco->cidade,
+                    'estado' => $endereco->estado,
+                    'numero' => $endereco->numero,
+                    'complemento' => $endereco->complemento,
+                    'referencia' => $endereco->referencia
+                ]);
 
                 return response()->json($result, 201);
 
