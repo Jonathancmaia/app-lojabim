@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\item;
 use App\Models\encomenda;
 use App\Models\cliente;
+use App\Models\endereco;
 use App\Models\encomenda_has_item;
 use FlyingLuscas\Correios\Client;
 use FlyingLuscas\Correios\Service;
@@ -39,6 +40,14 @@ try {
     env('PAGSEGURO_TOKEN')
 );
 
+try {
+    $response = \PagSeguro\Services\Session::create(
+        \PagSeguro\Configuration\Configure::getAccountCredentials()
+    );
+} catch (Exception $e) {
+    die($e->getMessage());
+}
+
 /**
  *
  * @see https://devpagseguro.readme.io/docs/endpoints-da-api#section-formato-de-dados-para-envio-e-resposta
@@ -53,18 +62,20 @@ try {
  *
  * @var string $logPath
  */
-\PagSeguro\Configuration\Configure::setLog(true, 'storage/logs');
+\PagSeguro\Configuration\Configure::setLog(false, 'storage/logs');
 
 class PagseguroController extends Controller
 {
 
-    public function __Construct (Item $item, Encomenda $encomenda, Cliente $cliente, Encomenda_has_item $encomenda_has_item){
+    public function __Construct (Item $item, Encomenda $encomenda, Cliente $cliente, Encomenda_has_item $encomenda_has_item, Endereco $endereco){
 
         //Método construtor chama as classes que serão usadas no controller
         $this->Item = $item;
         $this->Encomenda = $encomenda;
         $this->Cliente = $cliente;
         $this->Encomenda_has_item = $encomenda_has_item;
+        $this->Endereco = $endereco;
+        $this->middleware('auth:api', ['except' => ['login']]);
 
     }
 
@@ -83,16 +94,6 @@ class PagseguroController extends Controller
 
     public function checkout(Request $request){
 
-        $this->middleware('auth:api', ['except' => ['login']]);
-
-        try {
-            $response = \PagSeguro\Services\Session::create(
-                \PagSeguro\Configuration\Configure::getAccountCredentials()
-            );
-        } catch (Exception $e) {
-            die($e->getMessage());
-        }
-
         $valor = '0';
         $payment = new \PagSeguro\Domains\Requests\Payment();
         $pedido = json_decode($request->items);
@@ -100,7 +101,7 @@ class PagseguroController extends Controller
         $item = new \PagSeguro\Domains\Item();
         $payment->setItems($pedido);
 
-        foreach ($pedido as $id => $produto) {
+        foreach (json_decode($pedido) as $id => $produto) {
 
             //Verifica se o produto existe
             if (!$data = $this->Item->find($produto->itemId)){
@@ -131,6 +132,7 @@ class PagseguroController extends Controller
         $payment->setReference("LIBPHP000001");
 
         //Seta o endereço para a API PAGSEGURO
+        $endereco = json_decode($endereco);
         $payment->setShipping()->setAddress()->withParameters(
             $endereco->rua,
             $endereco->numero,
@@ -214,7 +216,7 @@ class PagseguroController extends Controller
 
                 $encomenda_id = $this->Encomenda->create($dados)->id;
 
-                foreach ($pedido as $id => $produto) {
+                foreach (json_decode($pedido) as $id => $produto) {
 
                     $this->Encomenda_has_item->create([
                         'encomenda_id' => $encomenda_id,
