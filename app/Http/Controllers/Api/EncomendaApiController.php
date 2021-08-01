@@ -11,11 +11,13 @@ class EncomendaApiController extends Controller
     public function __Construct (Encomenda $encomenda, Request $request){
         $this->Encomenda = $encomenda;
         $this->Request = $request;
+        $this->middleware('auth:api', ['except' => ['login']]);
     }
     
     public function index()
     {
-        $data = $this->Encomenda->all();
+        $data = $this->Encomenda->all()->
+            where('cliente_id', '=', auth()->user()->id);
         return response()->json($data);
     }
 
