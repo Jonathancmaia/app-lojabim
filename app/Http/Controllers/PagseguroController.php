@@ -208,7 +208,7 @@ class PagseguroController extends Controller
             if(auth()->check()){
 
                 $dados = [
-                    'valor' => $valor,
+                    'valor' => number_format($valor, 2, '.', '.'),
                     'cliente_id' => auth()->user()->id,
                     'transaction_code' => substr($result, 67, 99)
                 ];
