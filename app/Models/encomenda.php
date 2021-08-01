@@ -11,13 +11,15 @@ class encomenda extends Model
 {
     protected $fillable = [
         'cliente_id',
-        'valor'
+        'valor',
+        'transaction_code'
     ];
 
     public function rules(){
         return [
             'cliente_id' => 'required',
-            'valor' => 'required'
+            'valor' => 'required',
+            'transaction_code' => 'required'
         ];
     }
 

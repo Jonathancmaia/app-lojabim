@@ -204,13 +204,13 @@ class PagseguroController extends Controller
             $result = $payment->register(
                 \PagSeguro\Configuration\Configure::getAccountCredentials()
             );
-            
 
             if(auth()->check()){
 
                 $dados = [
                     'valor' => $valor,
-                    'cliente_id' => auth()->user()->id
+                    'cliente_id' => auth()->user()->id,
+                    'transaction_code' => substr($result, 67, 99)
                 ];
 
                 $encomenda_id = $this->Encomenda->create($dados)->id;

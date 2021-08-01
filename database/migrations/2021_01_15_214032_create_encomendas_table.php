@@ -11,6 +11,7 @@ class CreateEncomendasTable extends Migration
         Schema::create('encomendas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('valor')->default(0);
+            $table->string('transaction_code');
             $table->integer('cliente_id')->unsigned();
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
