@@ -11,6 +11,8 @@ use App\Models\endereco;
 use App\Models\encomenda_has_item;
 use FlyingLuscas\Correios\Client;
 use FlyingLuscas\Correios\Service;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client as GuzzleClient;
 
 
 
@@ -250,5 +252,40 @@ class PagseguroController extends Controller
         } catch (Exception $e) {
             die($e->getMessage());
         }
+    }
+
+    public function consultaEncomenda(Request $request){
+
+        $client = new GuzzleClient(['http_errors' => false]);
+        $token = $request->token;
+
+        $request = $client->get('https://ws.sandbox.pagseguro.uol.com.br/v2/transactions/'.$token.'?email=nozestrump@hotmail.com&token=5F8DE25C8AFC4260B29EB8AADA30A3A2');
+            
+        $response = $request->getBody();
+
+        $xml = simplexml_load_string($response->getContents());
+
+        $json = json_encode($xml);
+
+        $retorno = json_decode($json,TRUE);
+
+        if (isset($retorno['error']['code'])){
+
+            if ($retorno['error']['code'] === '13003'){
+
+                $encomenda = $this->Encomenda->where('transaction_code', $token)->get();
+
+                $this->Encomenda->destroy($encomenda[0]->id);
+
+                return ('apagado');
+                
+            }
+            
+        } else {
+
+            return $retorno;
+
+        }
+
     }
 }

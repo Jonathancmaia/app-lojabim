@@ -12,6 +12,7 @@ Route::group([
   Route::get('me', 'Auth\AuthenticateController@me');
   Route::post('signup', 'Auth\RegisterController@create');
 
+  $this->get('consultaEncomenda/{token}', 'PagseguroController@consultaEncomenda');
   $this->get('item/{type}', 'Api\ItemApiController@index');
   $this->apiResource('foto', 'Api\FotoApiController');
   $this->get('item/{id}/foto', 'Api\ItemApiController@foto');
