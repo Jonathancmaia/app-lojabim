@@ -25,7 +25,7 @@ try {
     return($e);
 }
 
-\PagSeguro\Configuration\Configure::setEnvironment('sandbox'); //production or sandbox
+\PagSeguro\Configuration\Configure::setEnvironment('production'); //production or sandbox
 
 \PagSeguro\Configuration\Configure::setAccountCredentials(
     /**
