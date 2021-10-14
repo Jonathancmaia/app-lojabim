@@ -11,6 +11,7 @@ Route::group([
   Route::post('refresh', 'Auth\AuthenticateController@refresh');
   Route::get('me', 'Auth\AuthenticateController@me');
   Route::post('signup', 'Auth\RegisterController@create');
+  Route::post('problem', 'EmailSenderController@sendProblem');
 
   $this->get('consultaEncomenda/{token}', 'PagseguroController@consultaEncomenda');
   $this->get('item/{type}', 'Api\ItemApiController@index');
