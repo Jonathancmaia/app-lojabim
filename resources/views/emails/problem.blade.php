@@ -1,11 +1,9 @@
-<p>O seguinte cliente possui um problema:</p>
+<h1>O seguinte cliente possui um problema:<h1>
 <h1>{{ $nome }}<h1>
 <br/>
+<h2>Informações de contato:</h2>
+<p>Telefone: {{ $tel }}<p>
+<p>Email: {{ $email }}<p>
 <br/>
-<p>informações de contato</p>
-<p>{{ $tel }}<p>
-<p>{{ $email }}<p>
-<br/>
-<br/>
-<p>Relato do problema</p>
-<h2>{{ $problema }}<h2>
+<h2>Relato do problema:</h2>
+<p>{{ $problema }}<p>

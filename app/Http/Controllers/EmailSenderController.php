@@ -10,6 +10,6 @@ class EmailSenderController extends Controller
 {
     public function sendProblem(request $request)
     {
-        Mail::to($request->email)->send(new EmailSender($request));
+        Mail::to('nozestrump@gmail.com')->send(new EmailSender($request));
     }
 }
