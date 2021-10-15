@@ -28,6 +28,16 @@ class EmailSender extends Mailable
      */
     public function build(Request $request)
     {
-        return $this->view('emails.problem', get_object_vars($request));
+        $email = $request->email;
+        $nome = $request->nome;
+        $tel = $request->tel;
+        $problema = $request->problema;
+
+        return $this->view('emails.problem', [
+            'email'=>$email, 
+            'nome'=>$nome,
+            'tel'=>$tel,
+            'problema'=>$problema
+            ]);
     }
 }
