@@ -3,7 +3,7 @@
 <br/>
 <br/>
 <p>informações de contato</p>
-<p>{{ $telefone }}<p>
+<p>{{ $tel }}<p>
 <p>{{ $email }}<p>
 <br/>
 <br/>
