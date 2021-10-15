@@ -30,7 +30,7 @@ class EmailSender extends Mailable
     {
         $email = $request->email;
         $nome = $request->nome;
-        $tel = $request->tel;
+        $tel = $request->telefone;
         $problema = $request->problema;
 
         return $this->view('emails.problem', [
