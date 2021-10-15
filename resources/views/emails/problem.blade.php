@@ -1,1 +1,1 @@
-<h1>{{ $request }}<h1>
+<h1>{{ $email }}<h1>
