@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Http\Request;
 
 class EmailSender extends Mailable
 {
@@ -18,7 +19,6 @@ class EmailSender extends Mailable
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -26,8 +26,8 @@ class EmailSender extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(Request $request)
     {
-        return $this->view('emails.problem');
+        return $this->view('emails.problem', $request);
     }
 }
