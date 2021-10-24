@@ -269,7 +269,23 @@ class PagseguroController extends Controller
 
         $retorno = json_decode($json,TRUE);
 
-        return $retorno;
+        if (isset($retorno['error']['code'])){
+
+            if ($retorno['error']['code'] === '13003'){
+
+                $encomenda = $this->Encomenda->where('transaction_code', $token)->get();
+
+                $this->Encomenda->destroy($encomenda[0]->id);
+
+                return ('apagado');
+                
+            }
+            
+        } else {
+
+            return $retorno;
+
+        }
 
     }
 }
