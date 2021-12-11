@@ -179,12 +179,17 @@ class PagseguroController extends Controller
             $tipoEnvio2 = 1;
         }
 
-        $precoEnvio = $correios->freight()
-        ->origin('25071120')
-        ->destination($endereco->cep)
-        ->services(Service::SEDEX, Service::PAC)
-        ->item(40, 15, 40, 2.5, 1) // largura, altura, comprimento, peso e quantidade
-        ->calculate()[$tipoEnvio2];
+        function consultaFrete($correios, $endereco, $tipoEnvio2){
+            $precoEnvio = $correios->freight()
+            ->origin('25071120')
+            ->destination($endereco->cep)
+            ->services(Service::SEDEX, Service::PAC)
+            ->item(40, 15, 40, 2.5, 1) // largura, altura, comprimento, peso e quantidade
+            ->calculate()[$tipoEnvio2];
+            return $precoEnvio;
+        }
+
+        $precoEnvio = consultaFrete($correios, $endereco, $tipoEnvio2);
 
         if (!$precoEnvio['price']){
             return ('Erro ao cobrar o frete');
