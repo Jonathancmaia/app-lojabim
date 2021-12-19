@@ -264,7 +264,7 @@ class PagseguroController extends Controller
         $client = new GuzzleClient(['http_errors' => false]);
         $token = $request->token;
 
-        $request = $client->get('https://ws.sandbox.pagseguro.uol.com.br/v2/transactions/'.$token.'?email=nozestrump@hotmail.com&token=5F8DE25C8AFC4260B29EB8AADA30A3A2');
+        $request = $client->get('https://ws.pagseguro.uol.com.br/v2/transactions/'.$token.'?email=nozestrump@hotmail.com&token=5F8DE25C8AFC4260B29EB8AADA30A3A2');
             
         $response = $request->getBody();
 
