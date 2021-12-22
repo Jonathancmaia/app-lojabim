@@ -25,7 +25,7 @@ try {
     return($e);
 }
 
-\PagSeguro\Configuration\Configure::setEnvironment('production'); //production or sandbox
+\PagSeguro\Configuration\Configure::setEnvironment(env('PAGSEGURO_AMBIENTE')); //production or sandbox
 
 \PagSeguro\Configuration\Configure::setAccountCredentials(
     /**
@@ -179,6 +179,7 @@ class PagseguroController extends Controller
             $tipoEnvio2 = 1;
         }
 
+        //Função que calcula o frete
         function consultaFrete($correios, $endereco, $tipoEnvio2){
             $precoEnvio = $correios->freight()
             ->origin('25071120')
@@ -214,7 +215,7 @@ class PagseguroController extends Controller
 
             if(auth()->check()){
 
-                $dados = [
+                /*$dados = [
                     'valor' => number_format($valor, 2, '.', '.'),
                     'cliente_id' => auth()->user()->id,
                     'transaction_code' => substr($result, 67, 99)
@@ -243,7 +244,7 @@ class PagseguroController extends Controller
                     'numero' => $endereco->numero,
                     'complemento' => $endereco->complemento,
                     'referencia' => $endereco->referencia
-                ]);
+                ]);*/
 
                 return response()->json($result, 201);
 
@@ -264,7 +265,7 @@ class PagseguroController extends Controller
         $client = new GuzzleClient(['http_errors' => false]);
         $token = $request->token;
 
-        $request = $client->get('https://ws.pagseguro.uol.com.br/v2/transactions/'.$token.'?email=nozestrump@hotmail.com&token=5F8DE25C8AFC4260B29EB8AADA30A3A2');
+        $request = $client->get('https://ws.sandbox.pagseguro.uol.com.br/v2/transactions/'.$token.'?email=nozestrump@hotmail.com&token=5F8DE25C8AFC4260B29EB8AADA30A3A2');
             
         $response = $request->getBody();
 
@@ -277,4 +278,6 @@ class PagseguroController extends Controller
         return $retorno;
 
     }
+
+    
 }
