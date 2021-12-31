@@ -77,6 +77,8 @@ class PagseguroController extends Controller
         $this->Cliente = $cliente;
         $this->Encomenda_has_item = $encomenda_has_item;
         $this->Endereco = $endereco;
+
+        //Permite apenas usuários logados
         $this->middleware('auth:api', ['except' => ['login']]);
 
     }
@@ -214,25 +216,6 @@ class PagseguroController extends Controller
             );
 
             if(auth()->check()){
-
-                /*$dados = [
-                    'valor' => number_format($valor, 2, '.', '.'),
-                    'cliente_id' => auth()->user()->id,
-                    'transaction_code' => substr($result, 67, 99)
-                ];
-
-                $encomenda_id = $this->Encomenda->create($dados)->id;
-
-                foreach ($pedido as $id => $produto) {
-
-                    $this->Encomenda_has_item->create([
-                        'encomenda_id' => $encomenda_id,
-                        'item_id' => $produto->itemId,
-                        'item_qtd' => $produto->itemQuantity,
-                        'item_tam' => $produto->itemTam
-                    ]);
-
-                }
 
                 $this->Endereco->create([
                     'cliente_id' => auth()->user()->id,

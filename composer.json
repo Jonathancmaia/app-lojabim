@@ -12,9 +12,11 @@
         "flyingluscas/correios-php": "^2.4",
         "fruitcake/laravel-cors": "^2.0",
         "intervention/image": "^2.5",
+        "laminas/laminas-diactoros": "^2.4",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
         "pagseguro/pagseguro-php-sdk": "^6.0",
+        "symfony/psr-http-message-bridge": "^2.1",
         "tymon/jwt-auth": "1.0.*"
     },
     "require-dev": {
