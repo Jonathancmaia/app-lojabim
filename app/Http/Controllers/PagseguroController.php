@@ -227,7 +227,7 @@ class PagseguroController extends Controller
                     'numero' => $endereco->numero,
                     'complemento' => $endereco->complemento,
                     'referencia' => $endereco->referencia
-                ]);*/
+                ]);
 
                 return response()->json($result, 201);
 

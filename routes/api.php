@@ -17,7 +17,7 @@ Route::group([
   $this->get('item/{type}', 'Api\ItemApiController@index');
   $this->apiResource('foto', 'Api\FotoApiController');
   $this->get('item/{id}/foto', 'Api\ItemApiController@foto');
-  Route::post('frete', 'PagseguroController@frete');
+  $this->post('frete', 'PagseguroController@frete');
   Route::post('pagseguro', 'PagseguroNotificationService@index');
 
   Route::post('checkout', 'PagseguroController@checkout');
